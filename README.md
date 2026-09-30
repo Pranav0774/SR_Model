@@ -34,6 +34,23 @@ microphone button to record (it transcribes as soon as you stop, unless you unti
 the top right switches between light and dark mode, and your choice is remembered. The transcript is editable, and there are
 Copy and Save as .txt buttons. Recent transcripts are kept in your browser only, and can be cleared.
 
+### Sharing it with a friend through a link
+
+Double-click **`share.bat`**. It starts the app and a free Cloudflare "quick tunnel", then prints a link like
+`https://something-random.trycloudflare.com` (also copied to your clipboard). Anyone with that link can use the app
+in their browser, and the microphone works because the link is https. Notes:
+
+- Your computer does the work, so it must stay on, online and plugged in, and the `share.bat` window must stay open.
+  `share.bat` stops Windows from sleeping while it runs, but closing the laptop lid can still put it to sleep
+  (Control Panel > Power Options > "Choose what closing the lid does" > Do nothing).
+- The link changes every time you start it, and there is no password, so send it only to people you trust.
+- Requests are handled one at a time, so a second person waits for the first.
+- The first run downloads `cloudflared` (about 55 MB) from Cloudflare's official GitHub release and checks it against
+  the published SHA-256 checksum. It is saved in `tools/`, which is not uploaded to git.
+- The app takes about two minutes to start (it loads the models and runs a small warm-up so the first real request
+  is not slow). Cloudflare gives up on any request that takes longer than about 100 seconds, so very long audio may
+  fail through the link even though it works locally. Keep clips to a few minutes.
+
 ### Command line
 
 ```

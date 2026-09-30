@@ -53,11 +53,28 @@ class Transcriber:
                 self.loading = "translation"
                 with self._lock:
                     self.translator.ensure_loaded()
+            self.loading = "warming up"
+            with self._lock:
+                self._warm_inference()
             self.ready = True
         except Exception as e:  # missing weights, gated repo, low memory...
             self.warm_error = f"{type(e).__name__}: {e}"
         finally:
             self.loading = ""
+
+    def _warm_inference(self):
+        """Run one tiny job through every model. Without this the first real request is very slow
+        (about two minutes here) while the libraries set themselves up, which can time out behind a proxy."""
+        noise = np.random.default_rng(0).normal(0, 0.01, 2 * SR).astype(np.float32)
+        try:
+            self.detect_language(noise)
+            for lang, name in self.config["routes"].items():
+                self.engine(name).transcribe(noise, lang)
+            if self.config.get("translation", {}).get("preload", True):
+                self.translator.translate(["नमस्ते, आप कैसे हैं?"], "hi")
+                self.translator.translate(["வணக்கம், நீங்கள் எப்படி இருக்கிறீர்கள்?"], "ta")
+        except Exception:
+            pass  # warming up is only an optimisation; a real request will report any real problem
 
     def detect_language(self, wav: np.ndarray) -> str:
         """Pick English, Hindi or Tamil from the first 30 s using a small Whisper model."""
