@@ -1,0 +1,47 @@
+[
+  {
+    "language": "en",
+    "engine": "r2t2",
+    "clips": 100,
+    "wer": 0.0402,
+    "wer_basic_normalisation": 0.0592,
+    "cer": 0.0208,
+    "seconds": 0
+  },
+  {
+    "language": "hi",
+    "engine": "indic",
+    "clips": 100,
+    "wer": 0.0916,
+    "wer_basic_normalisation": 0.1104,
+    "cer": 0.0345,
+    "seconds": 0
+  },
+  {
+    "language": "hi",
+    "engine": "indic-ctc",
+    "clips": 100,
+    "wer": 0.0972,
+    "wer_basic_normalisation": 0.1157,
+    "cer": 0.0352,
+    "seconds": 0
+  },
+  {
+    "language": "ta",
+    "engine": "indic",
+    "clips": 100,
+    "wer": 0.297,
+    "wer_basic_normalisation": 0.297,
+    "cer": 0.1399,
+    "seconds": 0
+  },
+  {
+    "language": "ta",
+    "engine": "indic-ctc",
+    "clips": 100,
+    "wer": 0.3074,
+    "wer_basic_normalisation": 0.3074,
+    "cer": 0.1311,
+    "seconds": 0
+  }
+]

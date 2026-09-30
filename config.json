@@ -1,0 +1,35 @@
+{
+  "preload": true,
+  "routes": {
+    "en": "r2t2",
+    "hi": "indic",
+    "ta": "indic"
+  },
+  "engines": {
+    "r2t2": {
+      "path": "models/r2t2",
+      "device": "cpu",
+      "dtype": "float32",
+      "max_new_tokens": 512
+    },
+    "indic": {
+      "repo": "ai4bharat/indic-conformer-600m-multilingual",
+      "decoder": "rnnt"
+    },
+    "whisper": {
+      "model": "large-v3",
+      "device": "cpu",
+      "compute_type": "int8"
+    }
+  },
+  "language_id": {
+    "model": "small",
+    "device": "cpu",
+    "compute_type": "int8"
+  },
+  "translation": {
+    "repo": "facebook/nllb-200-distilled-600M",
+    "num_beams": 4,
+    "preload": true
+  }
+}

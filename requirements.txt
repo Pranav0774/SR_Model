@@ -1,0 +1,10 @@
+torch
+torchaudio
+qwen-asr==0.0.6
+faster-whisper
+huggingface_hub
+jiwer
+numpy
+flask
+num2words
+sacrebleu
