@@ -626,13 +626,14 @@ $("go").addEventListener("click", transcribe);
 
 function showResult(d) {
   const out = $("out");
-  out.value = d.text || ""; out.lang = d.language || "";
+  out.value = d.text || ""; out.lang = d.language || ""; fit(out);
   out.classList.remove("reveal"); void out.offsetWidth; out.classList.add("reveal");
   if (!d.text) message("No speech was found in this audio.");
   $("info").textContent = `${NAMES[d.language] || d.language} · ${d.engine} · ${d.audio_seconds} s of audio, done in ${d.elapsed_seconds} s`;
   const t = $("tout");
   if (d.translation) {
     t.value = d.translation;
+    requestAnimationFrame(() => fit(t)); setTimeout(() => fit(t), 600);
     t.classList.remove("reveal"); void t.offsetWidth; t.classList.add("reveal");
     $("tinfo").textContent = `${NAMES[d.language]} to English · NLLB-200`;
     $("transsec").classList.add("open");
@@ -642,8 +643,10 @@ function showResult(d) {
   }
   syncActions();
 }
+function fit(el) { el.style.height = "auto"; el.style.height = (el.scrollHeight + 2) + "px"; }
 function syncActions() { const has = $("out").value.trim().length > 0; $("copy").disabled = !has; $("save").disabled = !has; }
-$("out").addEventListener("input", syncActions);
+$("out").addEventListener("input", () => { syncActions(); fit($("out")); });
+$("tout").addEventListener("input", () => fit($("tout")));
 
 $("copy").addEventListener("click", async () => {
   try { await navigator.clipboard.writeText($("out").value); } catch { $("out").select(); document.execCommand("copy"); }

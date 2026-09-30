@@ -1,0 +1,30 @@
+[
+  {
+    "language": "hi",
+    "path": "text -> English",
+    "bleu": 39.2,
+    "chrf++": 63.7,
+    "sentences": 100
+  },
+  {
+    "language": "hi",
+    "path": "speech -> English",
+    "bleu": 30.9,
+    "chrf++": 58.1,
+    "sentences": 100
+  },
+  {
+    "language": "ta",
+    "path": "text -> English",
+    "bleu": 32.8,
+    "chrf++": 58.0,
+    "sentences": 100
+  },
+  {
+    "language": "ta",
+    "path": "speech -> English",
+    "bleu": 23.5,
+    "chrf++": 50.5,
+    "sentences": 100
+  }
+]

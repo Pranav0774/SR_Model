@@ -15,7 +15,7 @@ Whisper is included as a fallback engine and for automatic language detection.
 ## Running it on your machine
 
 You need Windows, Python 3.10-3.12, and [ffmpeg](https://ffmpeg.org) on your PATH.
-About 15 GB of disk and 16 GB of RAM is comfortable. No GPU is needed; everything runs on the CPU.
+About 20 GB of disk and 16 GB of RAM is comfortable (translation adds about 3 GB of RAM). No GPU is needed; everything runs on the CPU.
 
 1. **Hugging Face access (once).** IndicConformer is a gated model.
    Open <https://huggingface.co/ai4bharat/indic-conformer-600m-multilingual>, accept the terms, create a
@@ -78,6 +78,25 @@ Re-run it yourself:
 
 Per-clip references and outputs are saved in `results/`, and totals in `results/summary.json`.
 
+## Translation to English
+
+Tick "Also give me an English translation" on the page (or use `--translate` on the command line) and Hindi or
+Tamil speech is also given as English text. It is done in two steps: the speech is transcribed first, then the text
+is translated with Meta's NLLB-200 (distilled, 600M). The licence of that model is CC-BY-NC 4.0, so it is for
+non-commercial use only. English speech is left as it is.
+
+Measured on 100 FLEURS sentences per language against the human English versions (BLEU is 0-100, higher is better):
+
+| From | Translating the correct transcript | Full path from speech |
+|---|---|---|
+| Hindi | BLEU 39.2, chrF++ 63.7 | BLEU 30.9, chrF++ 58.1 |
+| Tamil | BLEU 32.8, chrF++ 58.0 | BLEU 23.5, chrF++ 50.5 |
+
+The English is readable and usually keeps the meaning, but it makes mistakes on names and specific words (for
+example "Aristotle" came out as "Astut", and "baked goods" as "fast-paced dishes"). Tamil is weaker than Hindi,
+partly because the Tamil transcript already has more errors. Translation takes roughly 11 s for 17 s of audio on a
+laptop CPU. Re-run the test with `python evaluate_translation.py --langs hi ta`.
+
 ## Speed
 
 On a 6-core laptop CPU, English (R2T2) runs at roughly 1.5x real time (about 17 s for an 11 s clip), and
@@ -88,7 +107,8 @@ while models load. A GPU with enough memory would be much faster; R2T2 needs mor
 
 - `app.py`, `static/index.html`: web interface
 - `transcribe.py`: command line
-- `evaluate.py`: accuracy test
+- `evaluate.py`: speech recognition accuracy test
+- `evaluate_translation.py`: translation quality test
 - `stt/`: engines, routing, audio decoding
 - `config.json`: language to engine routing and model settings
 - `download_models.py`, `prepare_tamil_model.py`: model download helpers
